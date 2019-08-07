@@ -16,7 +16,9 @@ export default class Game extends React.Component {
     const current = history[history.length - 1];
     const squares = current.squares.slice();
 
-    if (calculateWinner(squares) || squares[i]) {
+    const winner = calculateWinner(squares);
+
+    if (winner.winner || squares[i]) {
       return;
     }
 
@@ -35,22 +37,29 @@ export default class Game extends React.Component {
     return this.props.xIsNext ? "X" : "O";
   }
 
+  renderStatus(squares) {
+    const winner = calculateWinner(squares);
+
+    if (winner.winner) {
+      return `Winner: ${winner.winner}`;
+    }
+
+    if (squares.filter(sq => sq === null).length < 1) {
+      return 'Draw';
+    }
+
+    return `Next player: ${this.whoseTurn()}`;
+  }
+
   render() {
     const { history } = this.props;
     const current = history[this.props.stepNumber];
-    const winner = calculateWinner(current.squares);
-
-    let status;
-    if (winner) {
-      status = "Winner: " + winner;
-    } else {
-      status = "Next player: " + (this.whoseTurn());
-    }
+    const status = this.renderStatus(current.squares);
 
     const moves = history.map((step, move) => {
       const desc = move ?
         'Go to move #' + move :
-        'Go to game start';
+        'Play again';
       return (
         <li key={move}>
           <button onClick={() => this.playerJumpsTo(move)}>{desc}</button>

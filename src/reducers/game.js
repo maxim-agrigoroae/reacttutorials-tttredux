@@ -1,9 +1,13 @@
-import { GAME_PLAYER_MADE_TURN, GAME_PLAYER_JUMP_TO } from '../actions/game';
+import { 
+  GAME_PLAYER_MADE_TURN, 
+  GAME_PLAYER_JUMP_TO, 
+} from '../actions/game';
 
 const initialState = {
   history: [
     {
       squares: Array(9).fill(null),
+      // squares: Array(3).fill(Array(3).fill(null)),
     }
   ],
   stepNumber: 0,
